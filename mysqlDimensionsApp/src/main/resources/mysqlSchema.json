@@ -1,0 +1,11 @@
+{"keys":[{"name":"node_name","type":"string"},
+         {"name":"node_type","type":"string"}],
+ "timeBuckets":["1m"],
+ "values":
+  [{"name":"count","type":"string","aggregators":["COUNT"]}],
+ "dimensions":
+  [{"combination":[]},
+   {"combination":["node_name"]},
+   {"combination":["node_type"]},
+   {"combination":["node_name","node_type"]}]
+}
