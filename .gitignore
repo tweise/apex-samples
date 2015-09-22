@@ -1,1 +1,13 @@
-/mysqlDimensionsApp/target/
+.DS_Store
+.classpath
+.project
+.settings/
+.metadata/
+target/
+node_modules/
+/malhar
+/malhar-ui-console
+/console
+*.iml
+.idea/
+*~
