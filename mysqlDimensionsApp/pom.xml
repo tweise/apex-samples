@@ -299,6 +299,7 @@
       <version>${datatorrent.version}</version>
       <scope>test</scope>
     </dependency>
+    <!-- DT proprietary operator library - requires enterprise license  -->
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>dt-contrib</artifactId>
