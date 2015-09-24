@@ -13,15 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.mydtapp1;
+package com.example.deduper;
 
-import com.datatorrent.lib.dedup.DeduperWithHdfsStore;
+import junit.framework.TestCase;
+import org.apache.hadoop.conf.Configuration;
+import org.junit.Test;
 
-public class DeduperStaticImpl extends DeduperWithHdfsStore<Message, Message>
+import com.datatorrent.api.LocalMode;
+
+public class DeduperApplicationTest extends TestCase
 {
-  @Override
-  protected Message convert(Message message)
+
+  @Test
+  public void testApplication() throws Exception
   {
-    return message;
+    LocalMode lma = LocalMode.newInstance();
+    Configuration conf = new Configuration(false);
+
+    lma.prepareDAG(new DeduperApplication(), conf);
+    lma.cloneDAG(); // check serialization
+    LocalMode.Controller lc = lma.getController();
+    lc.setHeartbeatMonitoringEnabled(false);
+    lc.run(10000);
   }
 }

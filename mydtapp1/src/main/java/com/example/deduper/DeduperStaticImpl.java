@@ -13,36 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.mydtapp1;
+package com.example.deduper;
 
-import com.datatorrent.lib.bucket.Bucketable;
-import com.datatorrent.lib.bucket.Event;
+import com.datatorrent.lib.bucket.ExpirableHdfsBucketStore;
+import com.datatorrent.lib.bucket.TimeBasedBucketManagerImpl;
+import com.datatorrent.lib.dedup.DeduperWithHdfsStore;
 
-public class Message implements Event, Bucketable
+public class DeduperStaticImpl extends DeduperWithHdfsStore<Message, Message>
 {
-  private String key;
-  private long time;
-
-  private Message()
+  public DeduperStaticImpl()
   {
-  }
-
-  public Message(String key, long time)
-  {
-    this.key = key;
-    this.time = time;
+    bucketManager = new TimeBasedBucketManagerImpl<>();
+    ExpirableHdfsBucketStore<Message> bucketStore = new ExpirableHdfsBucketStore<>();
+    bucketManager.setBucketStore(bucketStore);
   }
 
   @Override
-  public long getTime()
+  protected Message convert(Message message)
   {
-    return time;
-  }
-
-  @Override
-  public Object getEventKey()
-  {
-
-    return key;
+    return message;
   }
 }
