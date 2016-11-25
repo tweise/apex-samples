@@ -141,6 +141,7 @@ public class Application implements StreamingApplication
      */
     @Description("Path of the file to write to")
     @Required
+    @Default.String("gs://apache-beam-samples/shakespeare/wordcount-output/")
     String getOutput();
     void setOutput(String value);
   }
@@ -148,7 +149,7 @@ public class Application implements StreamingApplication
   @Override
   public void populateDAG(DAG dag, Configuration conf)
   {
-    String optionsStr = conf.get(KEY_PIPELINE_OPTIONS, "");
+    String optionsStr = conf.get(KEY_PIPELINE_OPTIONS, "--runner=ApexRunner");
     String[] args = StringUtils.splitByWholeSeparator(optionsStr, " ");
     WordCountOptions options = PipelineOptionsFactory.fromArgs(args).withValidation()
         .as(WordCountOptions.class);
