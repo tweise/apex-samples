@@ -17,14 +17,13 @@
  */
 package com.example.myapexapp;
 
-import com.datatorrent.api.DAG;
-import com.datatorrent.api.StreamingApplication;
-import com.datatorrent.api.annotation.ApplicationAnnotation;
-
 import org.apache.beam.runners.apex.ApexPipelineOptions;
 import org.apache.beam.runners.apex.translation.ApexPipelineTranslator;
 import org.apache.beam.sdk.Pipeline;
-import org.apache.beam.sdk.io.TextIO;
+import org.apache.beam.sdk.io.Read;
+import org.apache.beam.sdk.io.Write;
+import org.apache.beam.sdk.io.hdfs.HDFSFileSink;
+import org.apache.beam.sdk.io.hdfs.HDFSFileSource;
 import org.apache.beam.sdk.options.Default;
 import org.apache.beam.sdk.options.Description;
 import org.apache.beam.sdk.options.PipelineOptions;
@@ -34,7 +33,6 @@ import org.apache.beam.sdk.options.Validation.Required;
 import org.apache.beam.sdk.transforms.Aggregator;
 import org.apache.beam.sdk.transforms.Count;
 import org.apache.beam.sdk.transforms.DoFn;
-import org.apache.beam.sdk.transforms.MapElements;
 import org.apache.beam.sdk.transforms.PTransform;
 import org.apache.beam.sdk.transforms.ParDo;
 import org.apache.beam.sdk.transforms.SimpleFunction;
@@ -43,6 +41,14 @@ import org.apache.beam.sdk.values.KV;
 import org.apache.beam.sdk.values.PCollection;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
+
+import com.datatorrent.api.DAG;
+import com.datatorrent.api.StreamingApplication;
+import com.datatorrent.api.annotation.ApplicationAnnotation;
 
 /**
  * ApexRunner doesn't implement launch on YARN yet, hence we move the Beam
@@ -80,6 +86,20 @@ public class Application implements StreamingApplication
           c.output(word);
         }
       }
+    }
+  }
+
+  /**
+   * A simple function that outputs the value
+   *
+   */
+
+  static class ExtractString extends DoFn<KV<LongWritable, Text>, String>
+  {
+    @ProcessElement
+    public void processElement(ProcessContext c) throws Exception
+    {
+      c.output(c.element().getValue().toString());
     }
   }
 
@@ -128,20 +148,21 @@ public class Application implements StreamingApplication
   public interface WordCountOptions extends PipelineOptions {
 
     /**
-     * By default, this example reads from a public dataset containing the text of
-     * King Lear. Set this option to choose a different input file or glob.
+     * By default, this example reads from /tmp/input/* from your HDFS.
+     * Set this option to choose a different location.
      */
     @Description("Path of the file to read from")
-    @Default.String("gs://apache-beam-samples/shakespeare/kinglear.txt")
+    @Default.String("/tmp/input/*")
     String getInputFile();
     void setInputFile(String value);
 
     /**
-     * Set this required option to specify where to write the output.
+     * Set this option to specify where to write the output, default is /tmp/output.
+     * The output directory should not exist on HDFS.
      */
     @Description("Path of the file to write to")
     @Required
-    @Default.String("gs://apache-beam-samples/shakespeare/wordcount-output/")
+    @Default.String("/tmp/output/")
     String getOutput();
     void setOutput(String value);
   }
@@ -154,13 +175,15 @@ public class Application implements StreamingApplication
     WordCountOptions options = PipelineOptionsFactory.fromArgs(args).withValidation()
         .as(WordCountOptions.class);
       Pipeline p = Pipeline.create(options);
-
       // Concepts #2 and #3: Our pipeline applies the composite CountWords transform, and passes the
       // static FormatAsTextFn() to the ParDo transform.
-      p.apply("ReadLines", TextIO.Read.from(options.getInputFile()))
-       .apply(new CountWords())
-       .apply(MapElements.via(new FormatAsTextFn()))
-       .apply("WriteCounts", TextIO.Write.to(options.getOutput()));
+
+        p.apply("ReadFromHDFS",
+            Read.from(
+                HDFSFileSource.from(options.getInputFile(), TextInputFormat.class, LongWritable.class, Text.class)))
+        .apply("ExtractPayload", ParDo.of(new ExtractString()))
+        .apply(new CountWords())
+        .apply("WriteToHDFS", Write.to(new HDFSFileSink(options.getOutput(), TextOutputFormat.class)));
 
       ApexPipelineOptions apexPipelineOptions =
           PipelineOptionsValidator.validate(ApexPipelineOptions.class, options);
