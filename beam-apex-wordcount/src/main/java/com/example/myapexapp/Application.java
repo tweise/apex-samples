@@ -183,7 +183,7 @@ public class Application implements StreamingApplication
                 HDFSFileSource.from(options.getInputFile(), TextInputFormat.class, LongWritable.class, Text.class)))
         .apply("ExtractPayload", ParDo.of(new ExtractString()))
         .apply(new CountWords())
-        .apply("WriteToHDFS", Write.to(new HDFSFileSink(options.getOutput(), TextOutputFormat.class)));
+        .apply("WriteToHDFS", Write.to(new HDFSFileSink(options.getOutput(), TextOutputFormat.class)).withNumShards(1));
 
       ApexPipelineOptions apexPipelineOptions =
           PipelineOptionsValidator.validate(ApexPipelineOptions.class, options);
