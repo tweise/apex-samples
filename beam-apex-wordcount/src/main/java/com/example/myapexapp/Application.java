@@ -122,7 +122,7 @@ public class Application implements StreamingApplication
   public static class CountWords extends PTransform<PCollection<String>,
       PCollection<KV<String, Long>>> {
     @Override
-    public PCollection<KV<String, Long>> apply(PCollection<String> lines) {
+    public PCollection<KV<String, Long>> expand(PCollection<String> lines) {
 
       // Convert lines of text into individual words.
       PCollection<String> words = lines.apply(
