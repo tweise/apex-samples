@@ -14,7 +14,7 @@
   <properties>
     <!-- change this if you desire to use a different version of Apex Core -->
     <apex.version>3.5.0</apex.version>
-    <beam.version>0.4.0-incubating</beam.version>
+    <beam.version>0.4.0</beam.version>
     <apex.apppackage.classpath>lib/*.jar</apex.apppackage.classpath>
   </properties>
 
@@ -274,7 +274,7 @@
     <dependency>
       <groupId>org.apache.beam</groupId>
       <artifactId>beam-sdks-java-io-hdfs</artifactId>
-      <version>0.4.0-incubating-SNAPSHOT</version>
+      <version>${beam.version}</version>
       <exclusions>
         <exclusion>
           <groupId>*</groupId>
