@@ -1,0 +1,15 @@
+curl -H "Content-Type: application/json" -X POST \
+  -d '{"loggers":[{"target":"com.datatorrent.lib.io.fs.AbstractFileOutputOperator","logLevel":"WARN"}]}' \
+  http://apex-sandbox:39809/ws/v2/stram/loggers/
+
+  
+2017-03-23 14:59:06,726 INFO com.datatorrent.lib.io.fs.AbstractFileOutputOperator: opened wordcountresult_4.6, active /tmp/wordcount-result/wordcountresult_4.6
+2017-03-23 15:00:29,714 INFO com.datatorrent.lib.io.fs.AbstractFileOutputOperator: closing wordcountresult_4.6
+2017-03-23 15:00:30,231 INFO com.datatorrent.lib.io.fs.AbstractFileOutputOperator: opened wordcountresult_4.7, active /tmp/wordcount-result/wordcountresult_4.7
+2017-03-23 15:01:42,430 INFO com.datatorrent.stram.util.LoggerUtil: changing level of com.datatorrent.lib.io.fs.AbstractFileOutputOperator to WARN
+2017-03-23 15:10:14,979 INFO com.datatorrent.stram.util.LoggerUtil: changing level of com.datatorrent.lib.io.fs.AbstractFileOutputOperator to DEBUG
+2017-03-23 15:10:28,220 DEBUG com.datatorrent.lib.io.fs.AbstractFileOutputOperator: Rotating file wordcountresult_4 14 501
+2017-03-23 15:10:28,220 DEBUG com.datatorrent.lib.io.fs.AbstractFileOutputOperator: request finalize wordcountresult_4.14
+2017-03-23 15:10:28,220 INFO com.datatorrent.lib.io.fs.AbstractFileOutputOperator: closing wordcountresult_4.14
+2017-03-23 15:10:28,238 DEBUG com.datatorrent.lib.io.fs.AbstractFileOutputOperator: Part file rotated wordcountresult_4 : 14
+  

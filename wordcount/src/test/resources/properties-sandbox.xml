@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<configuration>
+  <property>
+    <name>dt.application.*.operator.*.attr.MEMORY_MB</name>
+    <value>256</value>
+  </property>
+  <property>
+    <name>dt.operator.input.prop.directory</name>
+    <value>/tmp/wordcount</value>
+  </property>
+  <property>
+    <name>dt.operator.output.prop.filePath</name>
+    <value>/tmp/wordcount-result</value>
+  </property>
+  <property>
+    <name>dt.operator.output.prop.outputFileName</name>
+    <value>wordcountresult</value>
+  </property>
+  <property>
+    <name>dt.operator.output.prop.maxLength</name>
+    <value>500</value>
+  </property>
+  <property>
+    <name>dt.operator.output.prop.alwaysWriteToTmp</name>
+    <value>false</value>
+  </property>
+</configuration>
+
