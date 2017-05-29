@@ -1,0 +1,717 @@
+{
+  "streams": [
+    {
+      "logicalName": "uniqueTags",
+      "source": {
+        "operatorId": "8",
+        "portName": "output"
+      },
+      "sinks": [{
+        "operatorId": "9",
+        "portName": "input"
+      }],
+      "locality": "CONTAINER_LOCAL"
+    },
+    {
+      "logicalName": "tweetStatsResult",
+      "source": {
+        "operatorId": "6",
+        "portName": "queryResult"
+      },
+      "sinks": [{
+        "operatorId": "13",
+        "portName": "input"
+      }],
+      "locality": "CONTAINER_LOCAL"
+    },
+    {
+      "logicalName": "topTagsResult",
+      "source": {
+        "operatorId": "11",
+        "portName": "queryResult"
+      },
+      "sinks": [{
+        "operatorId": "12",
+        "portName": "input"
+      }],
+      "locality": "CONTAINER_LOCAL"
+    },
+    {
+      "logicalName": "hashtags",
+      "source": {
+        "operatorId": "7",
+        "portName": "output"
+      },
+      "sinks": [{
+        "operatorId": "8",
+        "portName": "input"
+      }],
+      "locality": "CONTAINER_LOCAL"
+    },
+    {
+      "logicalName": "timestampedTweets",
+      "source": {
+        "operatorId": "3",
+        "portName": "output"
+      },
+      "sinks": [{
+        "operatorId": "4",
+        "portName": "input"
+      }],
+      "locality": "CONTAINER_LOCAL"
+    },
+    {
+      "logicalName": "topTags",
+      "source": {
+        "operatorId": "9",
+        "portName": "output"
+      },
+      "sinks": [{
+        "operatorId": "10",
+        "portName": "input"
+      }],
+      "locality": "CONTAINER_LOCAL"
+    },
+    {
+      "logicalName": "topTagsMap",
+      "source": {
+        "operatorId": "10",
+        "portName": "output"
+      },
+      "sinks": [{
+        "operatorId": "11",
+        "portName": "input"
+      }],
+      "locality": "CONTAINER_LOCAL"
+    },
+    {
+      "logicalName": "rawJson",
+      "source": {
+        "operatorId": "1",
+        "portName": "output"
+      },
+      "sinks": [{
+        "operatorId": "2",
+        "portName": "input"
+      }],
+      "locality": "CONTAINER_LOCAL"
+    },
+    {
+      "logicalName": "windowedStats",
+      "source": {
+        "operatorId": "4",
+        "portName": "output"
+      },
+      "sinks": [{
+        "operatorId": "5",
+        "portName": "input"
+      }],
+      "locality": "CONTAINER_LOCAL"
+    },
+    {
+      "logicalName": "tweetStatsList",
+      "source": {
+        "operatorId": "5",
+        "portName": "output"
+      },
+      "sinks": [{
+        "operatorId": "6",
+        "portName": "input"
+      }],
+      "locality": "CONTAINER_LOCAL"
+    },
+    {
+      "logicalName": "rawTweets",
+      "source": {
+        "operatorId": "2",
+        "portName": "output"
+      },
+      "sinks": [
+        {
+          "operatorId": "3",
+          "portName": "input"
+        },
+        {
+          "operatorId": "7",
+          "portName": "input"
+        }
+      ],
+      "locality": "CONTAINER_LOCAL"
+    }
+  ],
+  "operators": [
+    {
+      "id": "8",
+      "name": "countByKey",
+      "className": "org.apache.apex.malhar.lib.window.impl.KeyedWindowedOperatorImpl",
+      "container": "container_1493704532740_0002_01_000002",
+      "host": "apex-sandbox:45399",
+      "totalTuplesProcessed": "0",
+      "totalTuplesEmitted": "0",
+      "tuplesProcessedPSMA": "0",
+      "tuplesEmittedPSMA": "0",
+      "cpuPercentageMA": "0.23112646257267444",
+      "latencyMA": "4",
+      "status": "ACTIVE",
+      "lastHeartbeat": "1493706023560",
+      "failureCount": "0",
+      "recoveryWindowId": "6415415340347426207",
+      "currentWindowId": "6415415340347426249",
+      "ports": [
+        {
+          "name": "input",
+          "type": "input",
+          "totalTuples": "0",
+          "tuplesPSMA": "0",
+          "bufferServerBytesPSMA": "0",
+          "queueSizeMA": "1",
+          "recordingId": null
+        },
+        {
+          "name": "output",
+          "type": "output",
+          "totalTuples": "0",
+          "tuplesPSMA": "0",
+          "bufferServerBytesPSMA": "0",
+          "queueSizeMA": "0",
+          "recordingId": null
+        }
+      ],
+      "unifierClass": null,
+      "logicalName": "countByKey",
+      "recordingId": null,
+      "counters": null,
+      "metrics": {},
+      "checkpointStartTime": "1493706002286",
+      "checkpointTime": "86",
+      "checkpointTimeMA": "226"
+    },
+    {
+      "id": "6",
+      "name": "tweetStatsSnapshot",
+      "className": "com.example.myapexapp.TweetStatsSnapshotServer",
+      "container": "container_1493704532740_0002_01_000002",
+      "host": "apex-sandbox:45399",
+      "totalTuplesProcessed": "0",
+      "totalTuplesEmitted": "1481",
+      "tuplesProcessedPSMA": "0",
+      "tuplesEmittedPSMA": "2",
+      "cpuPercentageMA": "0.25592848837209303",
+      "latencyMA": "7",
+      "status": "ACTIVE",
+      "lastHeartbeat": "1493706023560",
+      "failureCount": "0",
+      "recoveryWindowId": "6415415340347426207",
+      "currentWindowId": "6415415340347426249",
+      "ports": [
+        {
+          "name": "input",
+          "type": "input",
+          "totalTuples": "0",
+          "tuplesPSMA": "0",
+          "bufferServerBytesPSMA": "0",
+          "queueSizeMA": "1",
+          "recordingId": null
+        },
+        {
+          "name": "queryResult",
+          "type": "output",
+          "totalTuples": "1481",
+          "tuplesPSMA": "2",
+          "bufferServerBytesPSMA": "0",
+          "queueSizeMA": "0",
+          "recordingId": null
+        }
+      ],
+      "unifierClass": null,
+      "logicalName": "tweetStatsSnapshot",
+      "recordingId": null,
+      "counters": null,
+      "metrics": {},
+      "checkpointStartTime": "1493706002295",
+      "checkpointTime": "87",
+      "checkpointTimeMA": "308"
+    },
+    {
+      "id": "11",
+      "name": "topTagsSnapshot",
+      "className": "com.example.myapexapp.TopNSnapshotServer",
+      "container": "container_1493704532740_0002_01_000002",
+      "host": "apex-sandbox:45399",
+      "totalTuplesProcessed": "0",
+      "totalTuplesEmitted": "1481",
+      "tuplesProcessedPSMA": "0",
+      "tuplesEmittedPSMA": "2",
+      "cpuPercentageMA": "0.24694868277616278",
+      "latencyMA": "7",
+      "status": "ACTIVE",
+      "lastHeartbeat": "1493706023560",
+      "failureCount": "0",
+      "recoveryWindowId": "6415415340347426207",
+      "currentWindowId": "6415415340347426249",
+      "ports": [
+        {
+          "name": "input",
+          "type": "input",
+          "totalTuples": "0",
+          "tuplesPSMA": "0",
+          "bufferServerBytesPSMA": "0",
+          "queueSizeMA": "1",
+          "recordingId": null
+        },
+        {
+          "name": "queryResult",
+          "type": "output",
+          "totalTuples": "1481",
+          "tuplesPSMA": "2",
+          "bufferServerBytesPSMA": "0",
+          "queueSizeMA": "0",
+          "recordingId": null
+        }
+      ],
+      "unifierClass": null,
+      "logicalName": "topTagsSnapshot",
+      "recordingId": null,
+      "counters": null,
+      "metrics": {},
+      "checkpointStartTime": "1493706002321",
+      "checkpointTime": "83",
+      "checkpointTimeMA": "175"
+    },
+    {
+      "id": "7",
+      "name": "extractHashtags",
+      "className": "org.apache.apex.malhar.lib.function.FunctionOperator$FlatMapFunctionOperator",
+      "container": "container_1493704532740_0002_01_000002",
+      "host": "apex-sandbox:45399",
+      "totalTuplesProcessed": "0",
+      "totalTuplesEmitted": "0",
+      "tuplesProcessedPSMA": "0",
+      "tuplesEmittedPSMA": "0",
+      "cpuPercentageMA": "0.22259354164774275",
+      "latencyMA": "9",
+      "status": "ACTIVE",
+      "lastHeartbeat": "1493706023560",
+      "failureCount": "0",
+      "recoveryWindowId": "6415415340347426207",
+      "currentWindowId": "6415415340347426249",
+      "ports": [
+        {
+          "name": "input",
+          "type": "input",
+          "totalTuples": "0",
+          "tuplesPSMA": "0",
+          "bufferServerBytesPSMA": "0",
+          "queueSizeMA": "1",
+          "recordingId": null
+        },
+        {
+          "name": "output",
+          "type": "output",
+          "totalTuples": "0",
+          "tuplesPSMA": "0",
+          "bufferServerBytesPSMA": "0",
+          "queueSizeMA": "0",
+          "recordingId": null
+        }
+      ],
+      "unifierClass": null,
+      "logicalName": "extractHashtags",
+      "recordingId": null,
+      "counters": null,
+      "metrics": {},
+      "checkpointStartTime": "1493706002284",
+      "checkpointTime": "83",
+      "checkpointTimeMA": "225"
+    },
+    {
+      "id": "3",
+      "name": "assignTimestamp",
+      "className": "org.apache.apex.malhar.lib.function.FunctionOperator$MapFunctionOperator",
+      "container": "container_1493704532740_0002_01_000002",
+      "host": "apex-sandbox:45399",
+      "totalTuplesProcessed": "0",
+      "totalTuplesEmitted": "0",
+      "tuplesProcessedPSMA": "0",
+      "tuplesEmittedPSMA": "0",
+      "cpuPercentageMA": "0.2461905433694366",
+      "latencyMA": "8",
+      "status": "ACTIVE",
+      "lastHeartbeat": "1493706023560",
+      "failureCount": "0",
+      "recoveryWindowId": "6415415340347426207",
+      "currentWindowId": "6415415340347426249",
+      "ports": [
+        {
+          "name": "input",
+          "type": "input",
+          "totalTuples": "0",
+          "tuplesPSMA": "0",
+          "bufferServerBytesPSMA": "0",
+          "queueSizeMA": "0",
+          "recordingId": null
+        },
+        {
+          "name": "output",
+          "type": "output",
+          "totalTuples": "0",
+          "tuplesPSMA": "0",
+          "bufferServerBytesPSMA": "0",
+          "queueSizeMA": "0",
+          "recordingId": null
+        }
+      ],
+      "unifierClass": null,
+      "logicalName": "assignTimestamp",
+      "recordingId": null,
+      "counters": null,
+      "metrics": {},
+      "checkpointStartTime": "1493706002276",
+      "checkpointTime": "100",
+      "checkpointTimeMA": "229"
+    },
+    {
+      "id": "9",
+      "name": "topN",
+      "className": "org.apache.apex.malhar.lib.window.impl.WindowedOperatorImpl",
+      "container": "container_1493704532740_0002_01_000002",
+      "host": "apex-sandbox:45399",
+      "totalTuplesProcessed": "0",
+      "totalTuplesEmitted": "0",
+      "tuplesProcessedPSMA": "0",
+      "tuplesEmittedPSMA": "0",
+      "cpuPercentageMA": "0.25835598655523256",
+      "latencyMA": "8",
+      "status": "ACTIVE",
+      "lastHeartbeat": "1493706023560",
+      "failureCount": "0",
+      "recoveryWindowId": "6415415340347426207",
+      "currentWindowId": "6415415340347426249",
+      "ports": [
+        {
+          "name": "input",
+          "type": "input",
+          "totalTuples": "0",
+          "tuplesPSMA": "0",
+          "bufferServerBytesPSMA": "0",
+          "queueSizeMA": "1",
+          "recordingId": null
+        },
+        {
+          "name": "output",
+          "type": "output",
+          "totalTuples": "0",
+          "tuplesPSMA": "0",
+          "bufferServerBytesPSMA": "0",
+          "queueSizeMA": "0",
+          "recordingId": null
+        }
+      ],
+      "unifierClass": null,
+      "logicalName": "topN",
+      "recordingId": null,
+      "counters": null,
+      "metrics": {},
+      "checkpointStartTime": "1493706002295",
+      "checkpointTime": "100",
+      "checkpointTimeMA": "306"
+    },
+    {
+      "id": "10",
+      "name": "kvToMap",
+      "className": "org.apache.apex.malhar.lib.function.FunctionOperator$MapFunctionOperator",
+      "container": "container_1493704532740_0002_01_000002",
+      "host": "apex-sandbox:45399",
+      "totalTuplesProcessed": "0",
+      "totalTuplesEmitted": "0",
+      "tuplesProcessedPSMA": "0",
+      "tuplesEmittedPSMA": "0",
+      "cpuPercentageMA": "0.22525976541189308",
+      "latencyMA": "4",
+      "status": "ACTIVE",
+      "lastHeartbeat": "1493706023560",
+      "failureCount": "0",
+      "recoveryWindowId": "6415415340347426207",
+      "currentWindowId": "6415415340347426249",
+      "ports": [
+        {
+          "name": "input",
+          "type": "input",
+          "totalTuples": "0",
+          "tuplesPSMA": "0",
+          "bufferServerBytesPSMA": "0",
+          "queueSizeMA": "1",
+          "recordingId": null
+        },
+        {
+          "name": "output",
+          "type": "output",
+          "totalTuples": "0",
+          "tuplesPSMA": "0",
+          "bufferServerBytesPSMA": "0",
+          "queueSizeMA": "0",
+          "recordingId": null
+        }
+      ],
+      "unifierClass": null,
+      "logicalName": "kvToMap",
+      "recordingId": null,
+      "counters": null,
+      "metrics": {},
+      "checkpointStartTime": "1493706002312",
+      "checkpointTime": "88",
+      "checkpointTimeMA": "218"
+    },
+    {
+      "id": "1",
+      "name": "fileInput",
+      "className": "org.apache.apex.malhar.lib.fs.LineByLineFileInputOperator",
+      "container": "container_1493704532740_0002_01_000002",
+      "host": "apex-sandbox:45399",
+      "totalTuplesProcessed": "0",
+      "totalTuplesEmitted": "0",
+      "tuplesProcessedPSMA": "0",
+      "tuplesEmittedPSMA": "0",
+      "cpuPercentageMA": "0.3082905982905983",
+      "latencyMA": "0",
+      "status": "ACTIVE",
+      "lastHeartbeat": "1493706023560",
+      "failureCount": "0",
+      "recoveryWindowId": "6415415340347426207",
+      "currentWindowId": "6415415340347426249",
+      "ports": [{
+        "name": "output",
+        "type": "output",
+        "totalTuples": "0",
+        "tuplesPSMA": "0",
+        "bufferServerBytesPSMA": "0",
+        "queueSizeMA": "0",
+        "recordingId": null
+      }],
+      "unifierClass": null,
+      "logicalName": "fileInput",
+      "recordingId": null,
+      "counters": {
+        "LOCAL_NUMBER_OF_FAILURES": "0",
+        "PENDING_FILES": "0",
+        "LOCAL_NUMBER_OF_RETRIES": "0",
+        "LOCAL_PROCESSED_FILES": "0",
+        "GLOBAL_PROCESSED_FILES": "0",
+        "GLOBAL_NUMBER_OF_RETRIES": "0",
+        "GLOBAL_NUMBER_OF_FAILURES": "0"
+      },
+      "metrics": {},
+      "checkpointStartTime": "1493706002262",
+      "checkpointTime": "97",
+      "checkpointTimeMA": "183"
+    },
+    {
+      "id": "13",
+      "name": "tweetStatsConsole",
+      "className": "com.datatorrent.lib.io.ConsoleOutputOperator",
+      "container": "container_1493704532740_0002_01_000002",
+      "host": "apex-sandbox:45399",
+      "totalTuplesProcessed": "1481",
+      "totalTuplesEmitted": "0",
+      "tuplesProcessedPSMA": "2",
+      "tuplesEmittedPSMA": "0",
+      "cpuPercentageMA": "0.21098700944767443",
+      "latencyMA": "7",
+      "status": "ACTIVE",
+      "lastHeartbeat": "1493706023560",
+      "failureCount": "0",
+      "recoveryWindowId": "6415415340347426207",
+      "currentWindowId": "6415415340347426249",
+      "ports": [{
+        "name": "input",
+        "type": "input",
+        "totalTuples": "1481",
+        "tuplesPSMA": "2",
+        "bufferServerBytesPSMA": "0",
+        "queueSizeMA": "1",
+        "recordingId": null
+      }],
+      "unifierClass": null,
+      "logicalName": "tweetStatsConsole",
+      "recordingId": null,
+      "counters": null,
+      "metrics": {},
+      "checkpointStartTime": "0",
+      "checkpointTime": "0",
+      "checkpointTimeMA": "0"
+    },
+    {
+      "id": "12",
+      "name": "topNConsole",
+      "className": "com.datatorrent.lib.io.ConsoleOutputOperator",
+      "container": "container_1493704532740_0002_01_000002",
+      "host": "apex-sandbox:45399",
+      "totalTuplesProcessed": "1481",
+      "totalTuplesEmitted": "0",
+      "tuplesProcessedPSMA": "2",
+      "tuplesEmittedPSMA": "0",
+      "cpuPercentageMA": "0.22083891616657575",
+      "latencyMA": "6",
+      "status": "ACTIVE",
+      "lastHeartbeat": "1493706023560",
+      "failureCount": "0",
+      "recoveryWindowId": "6415415340347426207",
+      "currentWindowId": "6415415340347426249",
+      "ports": [{
+        "name": "input",
+        "type": "input",
+        "totalTuples": "1481",
+        "tuplesPSMA": "2",
+        "bufferServerBytesPSMA": "0",
+        "queueSizeMA": "1",
+        "recordingId": null
+      }],
+      "unifierClass": null,
+      "logicalName": "topNConsole",
+      "recordingId": null,
+      "counters": null,
+      "metrics": {},
+      "checkpointStartTime": "0",
+      "checkpointTime": "0",
+      "checkpointTimeMA": "0"
+    },
+    {
+      "id": "4",
+      "name": "windowTweetStats",
+      "className": "org.apache.apex.malhar.lib.window.impl.WindowedOperatorImpl",
+      "container": "container_1493704532740_0002_01_000002",
+      "host": "apex-sandbox:45399",
+      "totalTuplesProcessed": "0",
+      "totalTuplesEmitted": "0",
+      "tuplesProcessedPSMA": "0",
+      "tuplesEmittedPSMA": "0",
+      "cpuPercentageMA": "0.2538594921732799",
+      "latencyMA": "8",
+      "status": "ACTIVE",
+      "lastHeartbeat": "1493706023560",
+      "failureCount": "0",
+      "recoveryWindowId": "6415415340347426207",
+      "currentWindowId": "6415415340347426249",
+      "ports": [
+        {
+          "name": "input",
+          "type": "input",
+          "totalTuples": "0",
+          "tuplesPSMA": "0",
+          "bufferServerBytesPSMA": "0",
+          "queueSizeMA": "1",
+          "recordingId": null
+        },
+        {
+          "name": "output",
+          "type": "output",
+          "totalTuples": "0",
+          "tuplesPSMA": "0",
+          "bufferServerBytesPSMA": "0",
+          "queueSizeMA": "0",
+          "recordingId": null
+        }
+      ],
+      "unifierClass": null,
+      "logicalName": "windowTweetStats",
+      "recordingId": null,
+      "counters": null,
+      "metrics": {},
+      "checkpointStartTime": "1493706002281",
+      "checkpointTime": "95",
+      "checkpointTimeMA": "221"
+    },
+    {
+      "id": "5",
+      "name": "toTweetStatsList",
+      "className": "org.apache.apex.malhar.lib.function.FunctionOperator$MapFunctionOperator",
+      "container": "container_1493704532740_0002_01_000002",
+      "host": "apex-sandbox:45399",
+      "totalTuplesProcessed": "0",
+      "totalTuplesEmitted": "0",
+      "tuplesProcessedPSMA": "0",
+      "tuplesEmittedPSMA": "0",
+      "cpuPercentageMA": "0.2908300781960356",
+      "latencyMA": "6",
+      "status": "ACTIVE",
+      "lastHeartbeat": "1493706023560",
+      "failureCount": "0",
+      "recoveryWindowId": "6415415340347426207",
+      "currentWindowId": "6415415340347426249",
+      "ports": [
+        {
+          "name": "input",
+          "type": "input",
+          "totalTuples": "0",
+          "tuplesPSMA": "0",
+          "bufferServerBytesPSMA": "0",
+          "queueSizeMA": "1",
+          "recordingId": null
+        },
+        {
+          "name": "output",
+          "type": "output",
+          "totalTuples": "0",
+          "tuplesPSMA": "0",
+          "bufferServerBytesPSMA": "0",
+          "queueSizeMA": "0",
+          "recordingId": null
+        }
+      ],
+      "unifierClass": null,
+      "logicalName": "toTweetStatsList",
+      "recordingId": null,
+      "counters": null,
+      "metrics": {},
+      "checkpointStartTime": "1493706002286",
+      "checkpointTime": "81",
+      "checkpointTimeMA": "182"
+    },
+    {
+      "id": "2",
+      "name": "jsonToStatus",
+      "className": "org.apache.apex.malhar.lib.function.FunctionOperator$MapFunctionOperator",
+      "container": "container_1493704532740_0002_01_000002",
+      "host": "apex-sandbox:45399",
+      "totalTuplesProcessed": "0",
+      "totalTuplesEmitted": "0",
+      "tuplesProcessedPSMA": "0",
+      "tuplesEmittedPSMA": "0",
+      "cpuPercentageMA": "0.24167408619749045",
+      "latencyMA": "8",
+      "status": "ACTIVE",
+      "lastHeartbeat": "1493706023560",
+      "failureCount": "0",
+      "recoveryWindowId": "6415415340347426207",
+      "currentWindowId": "6415415340347426249",
+      "ports": [
+        {
+          "name": "input",
+          "type": "input",
+          "totalTuples": "0",
+          "tuplesPSMA": "0",
+          "bufferServerBytesPSMA": "0",
+          "queueSizeMA": "1",
+          "recordingId": null
+        },
+        {
+          "name": "output",
+          "type": "output",
+          "totalTuples": "0",
+          "tuplesPSMA": "0",
+          "bufferServerBytesPSMA": "0",
+          "queueSizeMA": "0",
+          "recordingId": null
+        }
+      ],
+      "unifierClass": null,
+      "logicalName": "jsonToStatus",
+      "recordingId": null,
+      "counters": null,
+      "metrics": {},
+      "checkpointStartTime": "1493706002273",
+      "checkpointTime": "461",
+      "checkpointTimeMA": "340"
+    }
+  ]
+}

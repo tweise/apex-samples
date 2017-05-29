@@ -1,0 +1,8 @@
+{
+  "values":[
+	  {"name": "timestamp", "type": "long"},
+	  {"name": "total", "type": "long"},
+	  {"name": "withURL", "type": "long"},
+	  {"name": "withHashtag", "type": "long"}
+  ]
+}

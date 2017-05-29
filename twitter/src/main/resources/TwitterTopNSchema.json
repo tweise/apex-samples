@@ -1,0 +1,7 @@
+{
+  "values": [
+    {"name": "hashtag",   "type": "string"},
+    {"name": "count",     "type": "long"},
+    {"name": "label",     "type": "string"}
+  ]
+}

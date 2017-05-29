@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<configuration>
+  <!-- 
+  <property>
+    <name>dt.application.{appName}.operator.{opName}.prop.{propName}</name>
+    <value>some-default-value (if value is not specified, it is required from the user or custom config when launching)</value>
+  </property>
+  -->
+  <!-- memory assigned to app master
+  <property>
+    <name>dt.attr.MASTER_MEMORY_MB</name>
+    <value>1024</value>
+  </property>
+  -->
+
+  <!-- 
+    Setting all streams to container local will arrange all operators 
+    in a single process for sharing memory. This is useful only for resource 
+    limited sandbox environment, not for a scalable deployment in a cluster with 
+    multiple nodes.
+  -->
+  <property>
+    <name>dt.stream.*.prop.locality</name>
+    <value>CONTAINER_LOCAL</value>
+  </property>
+  <property>
+    <name>dt.operator.*.attr.MEMORY_MB</name>
+    <value>32</value>
+  </property>
+
+</configuration>
+

@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<configuration>
+<!-- 
+   Uncomment the properties below and configure as appropriate for your
+   environment to run the application with Twitter Sample Input and Websocket output.
+ -->
+
+  <property>
+    <name>dt.operator.twitterSampleInput.prop.consumerKey</name>
+    <value></value>
+  </property>
+  <property>
+    <name>dt.operator.twitterSampleInput.prop.consumerSecret</name>
+    <value></value>
+  </property>
+  <property>
+    <name>dt.operator.twitterSampleInput.prop.accessToken</name>
+    <value></value>
+  </property>
+  <property>
+    <name>dt.operator.twitterSampleInput.prop.accessTokenSecret</name>
+    <value></value>
+  </property>
+
+  <property>
+    <name>twitterDemo.isTwitterSampleInput</name>
+    <value>false</value>
+  </property>
+
+  <property>
+    <name>twitterDemo.isWebsocketOutput</name>
+    <value>false</value>
+  </property>
+
+  <property>
+    <name>twitterDemo.websocketUri</name>
+    <!--value>ws://10.3.0.247:8890/pubsub</value-->
+    <value>ws://localhost:8890/pubsub</value>
+  </property>
+
+  <property>
+    <name>dt.operator.*.attr.TIMEOUT_WINDOW_COUNT</name>
+    <value>10000</value>
+  </property>
+
+  <property>
+    <name>dt.stream.*.prop.locality</name>
+    <value>CONTAINER_LOCAL</value>
+  </property>
+
+</configuration>
+
