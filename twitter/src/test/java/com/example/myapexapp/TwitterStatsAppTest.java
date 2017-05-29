@@ -49,7 +49,6 @@ public class TwitterStatsAppTest
     appHandle.shutdown(ShutdownMode.KILL);
   }
 
-
   static class TestApplication implements StreamingApplication {
     @Override
     public void populateDAG(DAG dag, Configuration conf)
@@ -65,6 +64,5 @@ public class TwitterStatsAppTest
     }
 
   }
-
 
 }

@@ -4,11 +4,14 @@ import java.util.List;
 
 import org.codehaus.jettison.json.JSONObject;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
 
 import com.datatorrent.lib.appdata.schemas.DataQuerySnapshot;
+import com.datatorrent.lib.appdata.schemas.SchemaUtils;
+import com.datatorrent.lib.appdata.schemas.SnapshotSchema;
 import com.datatorrent.lib.testbench.CollectorTestSink;
 import com.datatorrent.lib.util.TestUtils;
 
@@ -77,4 +80,18 @@ public class TweetStatsTest
     Assert.assertEquals(Long.toString(tweetStats3.timestamp), data.get("timestamp"));
     Assert.assertEquals(Long.toString(tweetStats3.total), data.get("total"));
   }
+
+  @Ignore // see APEXMALHAR-2505
+  @Test
+  public void testFieldOrder() {
+    TopNSnapshotServer snapshotServer = new TopNSnapshotServer();
+    String JSON = SchemaUtils.jarResourceFileToString(TwitterStatsApp.TOPN_SCHEMA);
+    snapshotServer.setSnapshotSchemaJSON(JSON);
+    snapshotServer.setup(null);
+    SnapshotSchema schema = snapshotServer.getSchema();
+    List<String> expectedFieldOrder = Lists.newArrayList("hashtag", "count", "label");
+    List<String> actualFieldOrder = Lists.newArrayList(schema.getValuesDescriptor().getFields().getFields());
+    Assert.assertEquals(expectedFieldOrder, actualFieldOrder);
+  }
+
 }

@@ -2,10 +2,8 @@ package com.example.myapexapp;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -60,7 +58,7 @@ public class TwitterStatsApp implements StreamingApplication
 
   public static String WEBSOCKET_URI = "twitterDemo.websocketUri";
 
-  public static final String SCHEMA = "TwitterTopNSchema.json";
+  public static final String TOPN_SCHEMA = "TwitterTopNSchema.json";
 
   public static final String topic = "twitter";
   public static final String queryTopic = "twitterQuery";
@@ -68,9 +66,6 @@ public class TwitterStatsApp implements StreamingApplication
 
   static class ExtractHashtags implements Function.FlatMapFunction<Status, Tuple.TimestampedTuple<KeyValPair<String, Long>>>
   {
-    HashSet<String> filterList = new HashSet<>(Arrays.asList(new String[]{"", " ","I","you","the","a","to","as","he","him","his","her","she","me","can","for","of","and","or","but",
-        "this","that","!",",",".",":","#","/","@","be","in","out","was","were","is","am","are","so","no","...","my","de","RT","on","que","la","i","your","it","have","with","?","when",
-        "up","just","do","at","&","-","+","*","\\","y","n","like","se","en","te","el","I'm"}));
     @Override
     public Iterable<Tuple.TimestampedTuple<KeyValPair<String, Long>>> f(Status status)
     {
@@ -161,7 +156,6 @@ public class TwitterStatsApp implements StreamingApplication
               public TimestampedTuple<Status> f(Status input)
               {
                 long timestamp = input.getCreatedAt().getTime();
-                //timestamp = timestamp - (timestamp % (60*1000));
                 return new TimestampedTuple<>(timestamp, input);
               }
             }
@@ -248,7 +242,7 @@ public class TwitterStatsApp implements StreamingApplication
         new FunctionOperator.MapFunctionOperator<>(new KeyValPairToMap());
 
     TopNSnapshotServer topTagsSnapshot = new TopNSnapshotServer();
-    String JSON = SchemaUtils.jarResourceFileToString(SCHEMA);
+    String JSON = SchemaUtils.jarResourceFileToString(TOPN_SCHEMA);
     topTagsSnapshot.setSnapshotSchemaJSON(JSON);
 
     //PubSubWebSocketAppDataQuery wsQuery = new PubSubWebSocketAppDataQuery();
