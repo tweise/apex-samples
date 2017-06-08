@@ -116,6 +116,7 @@ public class TwitterStatsApp implements StreamingApplication
 
     if (isTwitterInput) {
       TwitterSampleInput sampleInput = dag.addOperator("twitterSampleInput", new TwitterSampleInput());
+      sampleInput.setReConnect(true); // frequent connection failures, retry by default
       statusPort = sampleInput.status;
     } else {
       LineByLineFileInputOperator fileInput = new LineByLineFileInputOperator();
