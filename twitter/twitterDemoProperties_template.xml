@@ -6,19 +6,19 @@
  -->
 
   <property>
-    <name>dt.operator.twitterSampleInput.prop.consumerKey</name>
+    <name>apex.operator.twitterSampleInput.prop.consumerKey</name>
     <value></value>
   </property>
   <property>
-    <name>dt.operator.twitterSampleInput.prop.consumerSecret</name>
+    <name>apex.operator.twitterSampleInput.prop.consumerSecret</name>
     <value></value>
   </property>
   <property>
-    <name>dt.operator.twitterSampleInput.prop.accessToken</name>
+    <name>apex.operator.twitterSampleInput.prop.accessToken</name>
     <value></value>
   </property>
   <property>
-    <name>dt.operator.twitterSampleInput.prop.accessTokenSecret</name>
+    <name>apex.operator.twitterSampleInput.prop.accessTokenSecret</name>
     <value></value>
   </property>
 

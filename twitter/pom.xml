@@ -7,12 +7,11 @@
   <artifactId>twitter-demo</artifactId>
   <packaging>jar</packaging>
 
-  <!-- change these to the appropriate values -->
-  <name>My Apex Application</name>
-  <description>My Apex Application Description</description>
+  <name>Twitter Example Application</name>
+  <description>Twitter Example Application</description>
 
   <properties>
-    <apex.version>3.5.0</apex.version>
+    <apex.version>3.6.0</apex.version>
     <apex.malhar.version>3.7.0</apex.malhar.version>
     <apex.apppackage.classpath>lib/*.jar</apex.apppackage.classpath>
   </properties>
