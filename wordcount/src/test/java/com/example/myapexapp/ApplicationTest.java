@@ -38,7 +38,7 @@ public class ApplicationTest {
       throw new AssertionError("Failed to delete " + resultFile);
     }
     AppHandle appHandle = launcher.launchApp(new Application(), conf, launchAttributes);
-    long timeoutMillis = System.currentTimeMillis() + 10000;
+    long timeoutMillis = System.currentTimeMillis() + 30000;
     while (!appHandle.isFinished() && System.currentTimeMillis() < timeoutMillis) {
       Thread.sleep(500);
       if (resultFile.exists() && resultFile.length() > 0) {

@@ -7,23 +7,23 @@
   </property>
   -->
   <property>
-    <name>dt.application.MyFirstApplication.operator.input.prop.directory</name>
+    <name>apex.application.MyFirstApplication.operator.input.prop.directory</name>
     <value>./src/test/resources</value>
   </property>
   <property>
-    <name>dt.application.MyFirstApplication.operator.output.prop.filePath</name>
+    <name>apex.application.MyFirstApplication.operator.output.prop.filePath</name>
     <value>./target</value>
   </property>
   <property>
-    <name>dt.application.MyFirstApplication.operator.output.prop.outputFileName</name>
+    <name>apex.application.MyFirstApplication.operator.output.prop.outputFileName</name>
     <value>wordcountresult</value>
   </property>
   <property>
-    <name>dt.application.MyFirstApplication.operator.output.prop.maxLength</name>
+    <name>apex.application.MyFirstApplication.operator.output.prop.maxLength</name>
     <value>1000</value>
   </property>
   <property>
-    <name>dt.application.MyFirstApplication.operator.output.prop.alwaysWriteToTmp</name>
+    <name>apex.application.MyFirstApplication.operator.output.prop.alwaysWriteToTmp</name>
     <value>false</value>
   </property>
 </configuration>
