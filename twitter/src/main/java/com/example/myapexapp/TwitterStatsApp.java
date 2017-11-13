@@ -33,6 +33,7 @@ import com.datatorrent.api.DAG.Locality;
 import com.datatorrent.api.DefaultInputPort;
 import com.datatorrent.api.Operator.OutputPort;
 import com.datatorrent.api.StreamingApplication;
+import com.datatorrent.contrib.twitter.TwitterSampleInput;
 import com.datatorrent.lib.appdata.schemas.SchemaUtils;
 import com.datatorrent.lib.io.ConsoleOutputOperator;
 import com.datatorrent.lib.io.PubSubWebSocketAppDataResult;

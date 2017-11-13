@@ -29,6 +29,7 @@ import com.datatorrent.api.DefaultInputPort;
 import com.datatorrent.api.DefaultOutputPort;
 import com.datatorrent.api.StreamingApplication;
 import com.datatorrent.common.util.BaseOperator;
+import com.datatorrent.contrib.twitter.TwitterSampleInput;
 
 import jline.internal.InputStreamReader;
 import twitter4j.Status;
@@ -93,10 +94,11 @@ public class TwitterIngestApp
     private transient ArrayBlockingQueue<String> jsonStatusQueue = new ArrayBlockingQueue<>(1024 * 1024);
 
     @Override
-    protected void setupConfigurationBuilder(ConfigurationBuilder cb)
+    protected ConfigurationBuilder setupConfigurationBuilder()
     {
-      super.setupConfigurationBuilder(cb);
+      ConfigurationBuilder cb = super.setupConfigurationBuilder();
       cb.setJSONStoreEnabled(true);
+      return cb;
     }
 
     @Override

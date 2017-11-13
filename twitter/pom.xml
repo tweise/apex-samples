@@ -12,7 +12,7 @@
 
   <properties>
     <apex.version>3.6.0</apex.version>
-    <apex.malhar.version>3.7.0</apex.malhar.version>
+    <apex.malhar.version>3.8.0</apex.malhar.version>
     <apex.apppackage.classpath>lib/*.jar</apex.apppackage.classpath>
   </properties>
 
