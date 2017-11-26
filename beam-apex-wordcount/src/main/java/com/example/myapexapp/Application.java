@@ -17,6 +17,7 @@
  */
 package com.example.myapexapp;
 
+import org.apache.apex.malhar.lib.utils.FileContextUtils;
 import org.apache.beam.runners.apex.ApexPipelineOptions;
 import org.apache.beam.runners.apex.ApexRunner;
 import org.apache.beam.runners.apex.translation.ApexPipelineTranslator;
@@ -39,6 +40,8 @@ import org.apache.beam.sdk.values.KV;
 import org.apache.beam.sdk.values.PCollection;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileContext;
+import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import com.datatorrent.api.DAG;
@@ -161,34 +164,66 @@ public class Application implements StreamingApplication
   @Override
   public void populateDAG(DAG dag, Configuration conf)
   {
+/*
+    HadoopFileSystemOptions fsoptions = PipelineOptionsFactory.as(HadoopFileSystemOptions.class);
+    //fsoptions.setHdfsConfiguration(ImmutableList.of(new Configuration()));
+    for (FileSystemRegistrar registrar
+        : Lists.newArrayList(ServiceLoader.load(FileSystemRegistrar.class).iterator())) {
+      System.out.println(registrar);
+      if (registrar instanceof HadoopFileSystemRegistrar) {
+        Iterable<FileSystem> fileSystems = registrar.fromOptions(fsoptions);
+        for (FileSystem fs : fileSystems) {
+          System.out.println(fs);
+        }
+      }
+    }
+*/
     String optionsStr = conf.get(KEY_PIPELINE_OPTIONS, "--runner=ApexRunner");
     String[] args = StringUtils.splitByWholeSeparator(optionsStr, " ");
     WordCountOptions options = PipelineOptionsFactory.fromArgs(args).withValidation()
         .as(WordCountOptions.class);
-      Pipeline p = Pipeline.create(options);
-      // Concepts #2 and #3: Our pipeline applies the composite CountWords transform, and passes the
-      // static FormatAsTextFn() to the ParDo transform.
-        p.apply("ReadFromHDFS", TextIO.read().from(options.getInputFile()))
-        .apply(new CountWords())
-        .apply(MapElements.via(new FormatAsTextFn()))
-        .apply("WriteToHDFS", TextIO.write().to(options.getOutput()).withNumShards(2));
+    Pipeline p = Pipeline.create(options);
+    // Concepts #2 and #3: Our pipeline applies the composite CountWords transform, and passes the
+    // static FormatAsTextFn() to the ParDo transform.
+      p.apply("ReadFromHDFS", TextIO.read().from(absoluteUri(options.getInputFile())))
+      .apply(new CountWords())
+      .apply(MapElements.via(new FormatAsTextFn()))
+      .apply("WriteToHDFS", TextIO.write().to(absoluteUri(options.getOutput())).withNumShards(2));
 
-      ApexPipelineOptions apexPipelineOptions =
-          PipelineOptionsValidator.validate(ApexPipelineOptions.class, options);
-      final ApexPipelineTranslator translator = new ApexPipelineTranslator(apexPipelineOptions);
+    ApexPipelineOptions apexPipelineOptions =
+        PipelineOptionsValidator.validate(ApexPipelineOptions.class, options);
+    final ApexPipelineTranslator translator = new ApexPipelineTranslator(apexPipelineOptions);
 
-      // roundabout way to apply overrides - we just want to translate, not run the pipeline here
-      ApexRunner runner = new ApexRunner(apexPipelineOptions);
+    // roundabout way to apply overrides - we just want to translate, not run the pipeline here
+    ApexRunner runner = new ApexRunner(apexPipelineOptions);
+    try {
+      Method m = ApexRunner.class.getDeclaredMethod("getOverrides");
+      m.setAccessible(true);
+      @SuppressWarnings("unchecked")
+      List<PTransformOverride> overrides = (List<PTransformOverride>)m.invoke(runner);
+      p.replaceAll(overrides);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+    translator.translate(p, dag);
+  }
+
+  private String absoluteUri(String path) {
+    Path p = new Path(path);
+    if (!p.toUri().isAbsolute()) {
       try {
-        Method m = ApexRunner.class.getDeclaredMethod("getOverrides");
-        m.setAccessible(true);
-        @SuppressWarnings("unchecked")
-        List<PTransformOverride> overrides = (List<PTransformOverride>)m.invoke(runner);
-        p.replaceAll(overrides);
+        FileContext fc = FileContextUtils.getFileContext(p);
+        // TextIO.Write.to has trouble with absolute URI for local FS...
+        if (!"file".equals(fc.getDefaultFileSystem().getUri().getScheme())) {
+          p = p.makeQualified(fc.getDefaultFileSystem().getUri(), fc.getWorkingDirectory());
+          System.out.println(p);
+          return p.toString();
+        }
       } catch (Exception e) {
         throw new RuntimeException(e);
       }
-      translator.translate(p, dag);
+    }
+    return path;
   }
 
 }
