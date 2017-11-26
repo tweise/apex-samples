@@ -13,8 +13,8 @@
 
   <properties>
     <!-- change this if you desire to use a different version of Apex Core -->
-    <apex.version>3.5.0</apex.version>
-    <beam.version>0.4.0</beam.version>
+    <apex.version>3.6.0</apex.version>
+    <beam.version>2.2.0</beam.version>
     <apex.apppackage.classpath>lib/*.jar</apex.apppackage.classpath>
   </properties>
 
@@ -109,20 +109,6 @@
                <goal>run</goal>
              </goals>
            </execution>
-           <execution>
-             <!-- create resource directory for xml javadoc-->
-             <id>createJavadocDirectory</id>
-             <phase>generate-resources</phase>
-             <configuration>
-               <tasks>
-                 <delete dir="${project.build.directory}/generated-resources/xml-javadoc"/>
-                 <mkdir dir="${project.build.directory}/generated-resources/xml-javadoc"/>
-               </tasks>
-             </configuration>
-             <goals>
-               <goal>run</goal>
-             </goals>
-           </execution>
          </executions>
        </plugin>
 
@@ -149,85 +135,6 @@
            </execution>
          </executions>
        </plugin>
-
-      <!-- generate javdoc -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <executions>
-          <!-- generate xml javadoc -->
-          <execution>
-            <id>xml-doclet</id>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>javadoc</goal>
-            </goals>
-            <configuration>
-              <doclet>com.github.markusbernhardt.xmldoclet.XmlDoclet</doclet>
-              <additionalparam>-d ${project.build.directory}/generated-resources/xml-javadoc -filename ${project.artifactId}-${project.version}-javadoc.xml</additionalparam>
-              <useStandardDocletOptions>false</useStandardDocletOptions>
-              <docletArtifact>
-                <groupId>com.github.markusbernhardt</groupId>
-                <artifactId>xml-doclet</artifactId>
-                <version>1.0.4</version>
-              </docletArtifact>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <!-- Transform xml javadoc to stripped down version containing only class/interface comments and tags-->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>xml-maven-plugin</artifactId>
-        <version>1.0</version>
-        <executions>
-          <execution>
-            <id>transform-xmljavadoc</id>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>transform</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <transformationSets>
-            <transformationSet>
-              <dir>${project.build.directory}/generated-resources/xml-javadoc</dir>
-              <includes>
-                <include>${project.artifactId}-${project.version}-javadoc.xml</include>
-              </includes>
-              <stylesheet>XmlJavadocCommentsExtractor.xsl</stylesheet>
-              <outputDir>${project.build.directory}/generated-resources/xml-javadoc</outputDir>
-            </transformationSet>
-          </transformationSets>
-        </configuration>
-      </plugin>
-      <!-- copy xml javadoc to class jar -->
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>2.6</version>
-        <executions>
-          <execution>
-            <id>copy-resources</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${basedir}/target/classes</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>${project.build.directory}/generated-resources/xml-javadoc</directory>
-                  <includes>
-                    <include>${project.artifactId}-${project.version}-javadoc.xml</include>
-                  </includes>
-                  <filtering>true</filtering>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
 
     </plugins>
 
@@ -273,7 +180,7 @@
     </dependency>
     <dependency>
       <groupId>org.apache.beam</groupId>
-      <artifactId>beam-sdks-java-io-hdfs</artifactId>
+      <artifactId>beam-sdks-java-io-hadoop-file-system</artifactId>
       <version>${beam.version}</version>
       <exclusions>
         <exclusion>
@@ -282,7 +189,7 @@
         </exclusion>
       </exclusions>
     </dependency>
-    <dependency>
+    <!--dependency>
       <groupId>org.apache.hadoop</groupId>
       <artifactId>hadoop-client</artifactId>
       <version>2.7.0</version>
@@ -293,11 +200,11 @@
       <artifactId>hadoop-common</artifactId>
       <version>2.7.0</version>
       <scope>provided</scope>
-    </dependency>
+    </dependency-->
     <dependency>
-      <groupId>org.apache.hadoop</groupId>
-      <artifactId>hadoop-mapreduce-client-core</artifactId>
-      <version>2.7.0</version>
+      <groupId>com.google.protobuf</groupId>
+      <artifactId>protobuf-java</artifactId>
+      <version>3.2.0</version>
     </dependency>
   </dependencies>
 </project>

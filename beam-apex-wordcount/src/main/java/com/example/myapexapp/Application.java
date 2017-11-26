@@ -18,37 +18,34 @@
 package com.example.myapexapp;
 
 import org.apache.beam.runners.apex.ApexPipelineOptions;
+import org.apache.beam.runners.apex.ApexRunner;
 import org.apache.beam.runners.apex.translation.ApexPipelineTranslator;
 import org.apache.beam.sdk.Pipeline;
-import org.apache.beam.sdk.io.Read;
-import org.apache.beam.sdk.io.Write;
-import org.apache.beam.sdk.io.hdfs.HDFSFileSink;
-import org.apache.beam.sdk.io.hdfs.HDFSFileSource;
+import org.apache.beam.sdk.io.TextIO;
 import org.apache.beam.sdk.options.Default;
 import org.apache.beam.sdk.options.Description;
 import org.apache.beam.sdk.options.PipelineOptions;
 import org.apache.beam.sdk.options.PipelineOptionsFactory;
 import org.apache.beam.sdk.options.PipelineOptionsValidator;
 import org.apache.beam.sdk.options.Validation.Required;
-import org.apache.beam.sdk.transforms.Aggregator;
+import org.apache.beam.sdk.runners.PTransformOverride;
 import org.apache.beam.sdk.transforms.Count;
 import org.apache.beam.sdk.transforms.DoFn;
+import org.apache.beam.sdk.transforms.MapElements;
 import org.apache.beam.sdk.transforms.PTransform;
 import org.apache.beam.sdk.transforms.ParDo;
 import org.apache.beam.sdk.transforms.SimpleFunction;
-import org.apache.beam.sdk.transforms.Sum;
 import org.apache.beam.sdk.values.KV;
 import org.apache.beam.sdk.values.PCollection;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
-import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
-
 import com.datatorrent.api.DAG;
 import com.datatorrent.api.StreamingApplication;
 import com.datatorrent.api.annotation.ApplicationAnnotation;
+import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  * ApexRunner doesn't implement launch on YARN yet, hence we move the Beam
@@ -68,15 +65,9 @@ public class Application implements StreamingApplication
    * to a ParDo in the pipeline.
    */
   static class ExtractWordsFn extends DoFn<String, String> {
-    private final Aggregator<Long, Long> emptyLines =
-        createAggregator("emptyLines", new Sum.SumLongFn());
 
     @ProcessElement
     public void processElement(ProcessContext c) {
-      if (c.element().trim().isEmpty()) {
-        emptyLines.addValue(1L);
-      }
-
       // Split the line into words.
       String[] words = c.element().split("[^a-zA-Z']+");
 
@@ -177,17 +168,26 @@ public class Application implements StreamingApplication
       Pipeline p = Pipeline.create(options);
       // Concepts #2 and #3: Our pipeline applies the composite CountWords transform, and passes the
       // static FormatAsTextFn() to the ParDo transform.
-
-        p.apply("ReadFromHDFS",
-            Read.from(
-                HDFSFileSource.from(options.getInputFile(), TextInputFormat.class, LongWritable.class, Text.class)))
-        .apply("ExtractPayload", ParDo.of(new ExtractString()))
+        p.apply("ReadFromHDFS", TextIO.read().from(options.getInputFile()))
         .apply(new CountWords())
-        .apply("WriteToHDFS", Write.to(new HDFSFileSink(options.getOutput(), TextOutputFormat.class)).withNumShards(1));
+        .apply(MapElements.via(new FormatAsTextFn()))
+        .apply("WriteToHDFS", TextIO.write().to(options.getOutput()).withNumShards(2));
 
       ApexPipelineOptions apexPipelineOptions =
           PipelineOptionsValidator.validate(ApexPipelineOptions.class, options);
       final ApexPipelineTranslator translator = new ApexPipelineTranslator(apexPipelineOptions);
+
+      // roundabout way to apply overrides - we just want to translate, not run the pipeline here
+      ApexRunner runner = new ApexRunner(apexPipelineOptions);
+      try {
+        Method m = ApexRunner.class.getDeclaredMethod("getOverrides");
+        m.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        List<PTransformOverride> overrides = (List<PTransformOverride>)m.invoke(runner);
+        p.replaceAll(overrides);
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
       translator.translate(p, dag);
   }
 

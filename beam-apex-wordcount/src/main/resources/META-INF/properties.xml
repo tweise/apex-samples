@@ -2,26 +2,26 @@
 <configuration>
   <!-- 
   <property>
-    <name>dt.application.{appName}.operator.{opName}.prop.{propName}</name>
+    <name>apex.application.{appName}.operator.{opName}.prop.{propName}</name>
     <value>some-default-value (if value is not specified, it is required from the user or custom config when launching)</value>
   </property>
   -->
   <!-- memory assigned to app master
   <property>
-    <name>dt.attr.MASTER_MEMORY_MB</name>
+    <name>apex.attr.MASTER_MEMORY_MB</name>
     <value>1024</value>
   </property>
   -->
   <property>
-    <name>dt.application.*.operator.*.attr.MEMORY_MB</name>
+    <name>apex.application.*.operator.*.attr.MEMORY_MB</name>
     <value>64</value>
   </property>
   <property>
-    <name>dt.stream.*.prop.locality</name>
+    <name>apex.stream.*.prop.locality</name>
     <value>CONTAINER_LOCAL</value>
   </property>
   <property>
-    <name>dt.application.*.operator.*.attr.TIMEOUT_WINDOW_COUNT</name>
+    <name>apex.application.*.operator.*.attr.TIMEOUT_WINDOW_COUNT</name>
     <value>1200</value>
   </property>
 
